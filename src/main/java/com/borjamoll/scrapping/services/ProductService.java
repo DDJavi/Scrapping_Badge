@@ -43,11 +43,12 @@ public class ProductService {
 
 
     public String run(Search key) throws JsonProcessingException {
-
+        if(key.getKey().equals("") || key.getKey()==null){
+            return "Bad request";
+        }
         try {
             if(key.isPrime()){
                 doc = Jsoup.connect(amazon + key.getKey().replace(" ", "+") + primeSearch).get();
-                System.out.println("Prime Search");
             }else{
                 doc = Jsoup.connect(amazon + key.getKey() + normalSearch).get();
             }
@@ -74,7 +75,6 @@ public class ProductService {
 
             try {
                 stars = link.select(starsCSS).attr("title");
-                System.out.println(stars);
                 if(stars.length()<1){
                     stars="No stars";
                 }
